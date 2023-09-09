@@ -83,7 +83,7 @@
 
 ;; Ejercicio 3.c)
 (define (hojas ar)
-  (type-case Arbo)
+  (type-case ArbolBinarioDeBusqueda ar))
 
 ;; Punto Extra
 (define (mas-repetido ls)
