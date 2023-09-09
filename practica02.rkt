@@ -93,8 +93,8 @@
 (define (mapea-arbol ab f)
   (type-case ArbolBinarioDeBusqueda ab
     [ArbolVacio () ab]
-    [ABB (elem izq der) (f elem) (mapea-arbol izq f)
-                                  (mapea-arbol der f)]))
+    [ABB (elem izq der) (ABB (f elem) (mapea-arbol izq f)
+                                  (mapea-arbol der f))]))
 
          ;;(f elem)
          ;;(mapea-arbol izq f)
