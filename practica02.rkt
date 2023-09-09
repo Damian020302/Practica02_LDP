@@ -8,11 +8,25 @@
 
 ;; Ejercicio 1.a)
 (define (punto-medio p q)
-  (error 'punto-medio "Sin implementar"))
+  (if (and (Punto? p) (Punto? q))
+      (begin
+        (punto (/ (+ (punto-x p) (punto-x q)) 2) 
+               (/ (+ (punto-y p) (punto-y q)) 2))
+        )
+      (error "parametro invalido")
+      )
+  )
 
 ;; Ejercicio 1.b)
 (define (distancia p q)
-  (error 'distancia "Sin implementar"))
+  (if (and (Punto? p) (Punto? q))
+      (begin
+        (sqrt (+(expt (-(punto-x q) (punto-x p)) 2)
+                (expt (-(punto-y q) (punto-y p)) 2)))
+        )
+      (error "parametro invalido")
+      )
+  )
 
 (define-type Lista
     [Vacia]
@@ -120,4 +134,65 @@
 
 ;; Punto Extra
 (define (mas-repetido ls)
-  (error 'mas-repetido "Sin implementar"))
+  (define lr (getReLs ls ls))
+  (define indice (mas-rep 0 0 lr lr (car lr)))
+  (getE 0 indice ls))
+
+;;funcion auxiliar (punto extra) proceso de busqueda
+(define (mas-rep ie i lr lr1 r)
+  [if (empty? lr1)
+      ie
+      {begin
+        (set! r (getE 0 ie lr))
+        [if (>= r (car lr1))
+            {begin
+              (mas-rep ie (+ 1 i) lr (cdr lr1) r)
+              }
+            {begin
+              (set! r (getE 0 i lr)) 
+              (mas-rep i (+ 1 i) lr (cdr lr1) r)
+              }
+            ]
+        }
+      ]
+  
+  )
+
+;;funcion auxiliar (punto extra) obtener elemento
+;;en la posición nf dada la lista ls
+(define (getE ni nf ls)
+  [if (empty? ls)
+      (error "no existe indice")
+      {begin
+        [if (equal? ni nf)
+            (car ls)
+            (getE (+ 1 ni) nf (cdr ls))]
+        }
+      ] 
+  )
+
+;;función auxiliar (punto extra)
+;;obtener lista de numero de veces repetidas
+;;de una lista lss
+(define (getReLs lsp lss)
+  [if (empty? lss)
+      (error "lista vacía")
+      {begin
+        [if (empty? (cdr lsp))
+            (list (veces-repetidas lss (car lsp)))
+            (cons (veces-repetidas lss (car lsp)) (getReLs (cdr lsp) lss))]
+        }
+      ]
+  )
+
+;;función auxiliar (punto extra)
+;;dado un elemento y una lista obtener el
+;;numero que se repite el elemento a
+(define (veces-repetidas ls a)
+  (if (empty? ls)
+      0
+      (if (equal? (car ls) a) 
+          (+ 1 (veces-repetidas (cdr ls) a))
+          (veces-repetidas (cdr ls) a))
+      )
+  )
