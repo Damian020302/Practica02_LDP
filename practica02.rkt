@@ -72,7 +72,6 @@
     [ABB (elem izq der) (string-append(lista-ordenada izq)" "(~a elem)
                                       " "(lista-ordenada der))]))
 
-
 ;; Ejercicio 3.a)
 (define (elimina e a)
   (error 'elimina "Sin implementar"))
@@ -83,7 +82,11 @@
 
 ;; Ejercicio 3.c)
 (define (hojas ar)
-  (type-case ArbolBinarioDeBusqueda ar))
+  (type-case ArbolBinarioDeBusqueda ar
+    [ArbolVacio () '()]
+    [ABB (elem izq der) (if(and (ArbolVacio? izq)(ArbolVacio? der))
+                           (list elem)
+                           (append (hojas izq)(hojas der)))] ))
 
 ;; Punto Extra
 (define (mas-repetido ls)
