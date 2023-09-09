@@ -32,19 +32,29 @@
 
 ;; Ejercicio 2.a)
 (define (longitud ls)
-  (error 'longitud "Sin implementar"))
+  (type-case Lista ls
+    [Vacia () 0]
+    [Cons (cabeza resto) (+ 1 (longitud resto))]))
 
 ;; Ejercicio 2.b)
 (define (pertenece? e ls)
-  (error 'pertenece? "Sin implementar"))
+  (type-case Lista ls
+    [Vacia () #f]
+    [Cons (cabeza resto) (if (= cabeza e)
+          #t
+          (pertenece? e resto))]))
 
 ;; Ejercicio 2.c)
 (define (intercala ls ks)
-  (error 'intercala "Sin implementar"))
+  (type-case Lista ls
+    [Vacia () ls]
+    [Cons (cabeza resto) (Cons cabeza(intercala ks resto))]))
 
 ;; Ejercicio 2.d)
 (define (aplana ls)
-  (error 'aplana "Sin implementar"))
+  (type-case Lista ls
+    [Vacia () '()]
+    [Cons (cabeza resto) (aplana cabeza)(aplana resto)]))
 
 (define-type ArbolBinarioDeBusqueda
     [ArbolVacio]
@@ -72,13 +82,27 @@
     [ABB (elem izq der) (string-append(lista-ordenada izq)" "(~a elem)
                                       " "(lista-ordenada der))]))
 
+;;(define (elim elto-actual r s)
+  ;;(cond
+
 ;; Ejercicio 3.a)
 (define (elimina e a)
   (error 'elimina "Sin implementar"))
 
 ;; Ejercicio 3.b)
 (define (mapea-arbol ab f)
-  (error 'mapea-arbol "Sin implementar"))
+  (type-case ArbolBinarioDeBusqueda ab
+    [ArbolVacio () ab]
+    [ABB (elem izq der) (f elem) (mapea-arbol izq f)
+                                  (mapea-arbol der f)]))
+
+         ;;(f elem)
+         ;;(mapea-arbol izq f)
+         ;;(mapea-arbol der f)]))
+
+         ;;(if(ArbolVacio? izq)
+           ;;                (f elem)
+             ;;              (mapea-arbol der f))]))
 
 ;; Ejercicio 3.c)
 (define (hojas ar)
@@ -86,7 +110,7 @@
     [ArbolVacio () '()]
     [ABB (elem izq der) (if(and (ArbolVacio? izq)(ArbolVacio? der))
                            (list elem)
-                           (append (hojas izq)(hojas der)))] ))
+                           (append (hojas izq)(hojas der)))]))
 
 ;; Punto Extra
 (define (mas-repetido ls)
