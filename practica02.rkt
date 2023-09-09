@@ -82,12 +82,26 @@
     [ABB (elem izq der) (string-append(lista-ordenada izq)" "(~a elem)
                                       " "(lista-ordenada der))]))
 
-;;(define (elim elto-actual r s)
-  ;;(cond
-
 ;; Ejercicio 3.a)
-(define (elimina e a)
-  (error 'elimina "Sin implementar"))
+(define (elimina ar e)
+  (type-case ArbolBinarioDeBusqueda ar
+    [ArbolVacio () ar]
+    [ABB (elem izq der) (cond
+                          [(= e elem) elimina-raiz ar]
+                          [(< e elem) (ABB (elem)(elimina izq e)(der))]
+                          [else (ABB (elem)(izq)(elimina der e))])]))
+
+(define (elimina-raiz ar)
+  (type-case ArbolBinarioDeBusqueda ar
+    [ArbolVacio () ar]
+    [ABB (elem izq der) (cond
+                          [(and (ArbolVacio? izq)(ArbolVacio? der)) ArbolVacio]
+                          [(ArbolVacio? izq) der]
+                          [(ArbolVacio? der) izq]
+                          [else (let* ((reemplazo
+                                        (elem(min-arbol der)))
+                                       (n-der (elimina der reemplazo)))
+                                  (ABB (reemplazo)(izq)(n-der)))])]))
 
 ;; Ejercicio 3.b)
 (define (mapea-arbol ab f)
@@ -95,14 +109,6 @@
     [ArbolVacio () ab]
     [ABB (elem izq der) (ABB (f elem) (mapea-arbol izq f)
                                   (mapea-arbol der f))]))
-
-         ;;(f elem)
-         ;;(mapea-arbol izq f)
-         ;;(mapea-arbol der f)]))
-
-         ;;(if(ArbolVacio? izq)
-           ;;                (f elem)
-             ;;              (mapea-arbol der f))]))
 
 ;; Ejercicio 3.c)
 (define (hojas ar)
