@@ -1,4 +1,7 @@
 #lang plai
+#|Integrantes:
+Sánchez Pavia Ángel Gabriel
+Vázquez Torrijos Damián|#
 
 (define (any? x)
   #t)
@@ -76,7 +79,8 @@
          (izq ArbolBinarioDeBusqueda?)
          (der ArbolBinarioDeBusqueda?)])
 
-;; Funciones auxiliares tipo ArbolBinarioDeBusqueda
+;;Funcion auxiliar
+;;Obtiene el valor maximo del ABB
 (define (max-arbol ar)
   (type-case ArbolBinarioDeBusqueda ar
     [ArbolVacio () (error 'max-arbol "Arbol Vacio")]
@@ -84,12 +88,17 @@
                                  elem
                                  (max-arbol izq))]))
 
+;;Funcion auxiliar
+;;Obtiene el valor minimo del ABB
 (define (min-arbol ar)
   (type-case ArbolBinarioDeBusqueda ar
     [ArbolVacio () (error 'min-arbol "Arbol Vacio")]
     [ABB (elem izq der) (if (ArbolVacio? der)
                                  elem
                                  (min-arbol der))]))
+
+;;Funcion auxiliar
+;;Hace una lista con los valores del ABB
 (define (lista-ordenada ar)
   (type-case ArbolBinarioDeBusqueda ar
     [ArbolVacio () ""]
@@ -104,7 +113,8 @@
                           [(= e elem) elimina-raiz ar]
                           [(< e elem) (ABB (elem)(elimina izq e)(der))]
                           [else (ABB (elem)(izq)(elimina der e))])]))
-
+;;Funcion auxiliar
+;;Elimina y cambia la raiz del ABB
 (define (elimina-raiz ar)
   (type-case ArbolBinarioDeBusqueda ar
     [ArbolVacio () ar]
